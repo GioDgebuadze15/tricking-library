@@ -1,16 +1,19 @@
 ﻿import Axios from 'axios'
 import {defineStore} from "pinia";
 
-export const useIndexStore = defineStore('index-store',{
-    state:()=>{
-        return {
-            message: "init"
+export const useIndexStore = defineStore({
+    id: 'index-store',
+    state: () => ({
+        message: "init"
+    }),
+    getters: {
+        getMessage(state) {
+            return state.message
         }
     },
-    actions:{
-        async fetchMessage(){
-            console.log("action called")
-            this.$pinia.state = (await Axios.get("https://localhost:7146/api/home")).data;
+    actions: {
+        async fetchMessage() {
+            this.message = (await Axios.get("https://localhost:7146/api/home")).data;
         }
     }
 })
