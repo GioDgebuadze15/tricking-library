@@ -1,24 +1,17 @@
 ﻿import {defineStore} from "pinia";
-import Axios from "axios";
+import {useRuntimeConfig} from "nuxt/app";
 
 
 export const useTricksStore = defineStore({
     id: 'tricks-store',
     state: () => ({
-       tricks:[] 
+        tricks: []
     }),
-    getters:{
-        getTricks(state){
-            return state.tricks
-        }
-    },
-    actions:{
-        async fetchTricks(){
-                    this.tricks = (await Axios.get("https://localhost:7146/api/tricks")).data;
+    actions: {
+        async fetchTricks() {
+            const config = useRuntimeConfig()
+            this.tricks = await $fetch(config.public.apiBase +"/api/tricks", {method: 'GET', body: null});
         },
-        async createTrick({trick}){
-            await Axios.post("https://localhost:7146/api/tricks",trick)
-            await this.fetchTricks()
-        }
+
     }
 })

@@ -7,7 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Folder Include="Models" />
       <Folder Include="wwwroot" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\TrickingLibrary.Models\TrickingLibrary.Models.csproj" />
     </ItemGroup>
 
 </Project>

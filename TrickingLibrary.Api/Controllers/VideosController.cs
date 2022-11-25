@@ -12,6 +12,13 @@ public class VideosController : ControllerBase
         _env = env;
     }
 
+    [HttpGet("{video}")]
+    public IActionResult GetVideo(string video)
+    {
+        var savePath = Path.Combine(_env.WebRootPath, video);
+        return new FileStreamResult(new FileStream(savePath, FileMode.Open, FileAccess.Read),"video/*");
+    }
+    
     [HttpPost]
     public async Task<IActionResult> UploadVideo(IFormFile video)
     {
@@ -24,6 +31,6 @@ public class VideosController : ControllerBase
             await video.CopyToAsync(fileStream);
         }
 
-        return Ok();
+        return Ok(fileName);
     }
 }
