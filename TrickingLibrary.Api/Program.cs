@@ -1,10 +1,11 @@
-using TrickingLibrary.Api.Models;
+using Microsoft.EntityFrameworkCore;
+using TrickingLibrary.Data;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSingleton<TrickyStore>();
+builder.Services.AddDbContext<AppDbContext>(options => options.UseInMemoryDatabase("Dev"));
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name:MyAllowSpecificOrigins, policy =>
