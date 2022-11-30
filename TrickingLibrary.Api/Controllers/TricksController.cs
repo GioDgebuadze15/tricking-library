@@ -20,17 +20,19 @@ public class TricksController : ControllerBase
     public IEnumerable<Trick> All() => _ctx.Tricks.ToList();
 
     // /api/tricks/{id}
-    [HttpGet("{id:int}")]
-    public Trick? Get(int id) => _ctx.Tricks.FirstOrDefault(x => x.Id.Equals(id));
+    [HttpGet("{id}")]
+    public Trick? Get(string id) =>
+        _ctx.Tricks.FirstOrDefault(x => x.Id.Equals(id, StringComparison.InvariantCultureIgnoreCase));
 
-    [HttpGet("{trickId::int}/submissions")]
-    public IEnumerable<Submission> ListSubmissionsForTrick(int trickId) =>
-        _ctx.Submissions.Where(x => x.TrickId.Equals(trickId)).ToList();
+    [HttpGet("{trickId}/submissions")]
+    public IEnumerable<Submission> ListSubmissionsForTrick(string trickId) =>
+        _ctx.Submissions.Where(x => x.TrickId.Equals(trickId, StringComparison.InvariantCultureIgnoreCase)).ToList();
 
     // /api/tricks
     [HttpPost]
     public async Task<Trick> Create([FromBody] Trick trick)
     {
+        trick.Id = trick.Name.Replace(" ", "-").ToLowerInvariant();
         _ctx.Tricks.Add(trick);
         await _ctx.SaveChangesAsync();
         return trick;
@@ -40,7 +42,7 @@ public class TricksController : ControllerBase
     [HttpPut]
     public async Task<Trick> Update([FromBody] Trick trick)
     {
-        if (trick.Id == 0) return trick;
+        if (string.IsNullOrEmpty(trick.Id)) return trick;
         _ctx.Tricks.Update(trick);
         await _ctx.SaveChangesAsync();
 
@@ -48,8 +50,8 @@ public class TricksController : ControllerBase
     }
 
     // /api/tricks/{id}
-    [HttpDelete("{id:int}")]
-    public async Task<IActionResult> Delete(int id)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(string id)
     {
         var trick = _ctx.Tricks.FirstOrDefault(x => x.Id.Equals(id));
         if (trick == null) return Ok();

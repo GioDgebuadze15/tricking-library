@@ -7,7 +7,6 @@ export const useIndexStore = defineStore({
     getters: {
     },
     actions: {
-        async fetchMessage() {
-        }
+
     }
 })

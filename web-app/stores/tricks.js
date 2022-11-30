@@ -7,10 +7,20 @@ export const useTricksStore = defineStore({
     state: () => ({
         tricks: []
     }),
+    getters: {
+        trickItems: state => state.tricks.map(x => ({
+            text: x.name,
+            value: x.id
+        }))
+    },
     actions: {
         async fetchTricks() {
             const config = useRuntimeConfig()
-            this.tricks = await $fetch(config.public.apiBase +"/api/tricks", {method: 'GET', body: null});
+            this.tricks = await $fetch(config.public.apiBase + "/api/tricks", {method: 'GET', body: null});
+        },
+        createTrick({form}) {
+            const config = useRuntimeConfig()
+            return $fetch(config.public.apiBase + "/api/tricks", {method: 'POST', body: form})
         },
 
     }

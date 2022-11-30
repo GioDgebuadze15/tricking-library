@@ -1,5 +1,6 @@
 ﻿import {defineStore} from "pinia";
 import {useRuntimeConfig} from "nuxt/app";
+import {useSubmissionsStore} from "~/stores/submissions";
 
 
 export const useVideosStore = defineStore({
@@ -7,31 +8,31 @@ export const useVideosStore = defineStore({
     state: () => ({
         uploadPromise: null,
         active: false,
-        type: "",
-        step: 1,
+        component: null
     }),
     actions: {
+        hide(){
+            this.active = false;
+        },
         startVideoUpload(form) {
             const config = useRuntimeConfig()
             this.uploadPromise = $fetch(config.public.apiBase + "/api/videos", {method: 'POST', body: form});
             this.step++
         },
-        async createTrick({trick}) {
-            const config = useRuntimeConfig()
-            await $fetch(config.public.apiBase + "/api/tricks", {method: 'POST', body: trick})
-            this.step++
-            // const trickStore = useTricksStore()
-            // await trickStore.fetchTricks()
+        activate({component}){
+            this.active = true;
+            this.component = component
         },
-        toggleActivity() {
-            this.active = !this.active
-            if (!this.active) {
-                this.$reset();
+        async createSubmission({form}) {
+            if (!this.uploadPromise) {
+                console.log("Upload Promise is Null!");
+                return;
             }
+            
+            const submissionsStore = useSubmissionsStore()
+            form.video = await this.uploadPromise;
+            await submissionsStore.createSubmission({form: this.form});
+            this.$reset()
         },
-        setType({type}) {
-            this.type = type
-            this.step++
-        }
     }
 })
