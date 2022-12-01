@@ -30,6 +30,7 @@
 <script>
 
 import {useTricksStore} from "../../stores/tricks";
+import {useVideosStore} from "../../stores/video-upload";
 
 const initState = () => ({
   step: 1,
@@ -42,25 +43,28 @@ export default {
   name: "trick-steps",
   setup() {
     const tricksStore = useTricksStore()
+    const videosStore = useVideosStore()
 
     return {
       tricksStore,
+      videosStore
     }
   },
   data: initState,
-  watch:{
-    'active': function (newValue){
-      if(!newValue){
+  watch: {
+    'active': function (newValue) {
+      if (!newValue) {
         Object.assign(this.$data, initState())
       }
     }
   },
   methods: {
-    async save() {
-      await this.tricksStore.createTrick({form: this.form});
+    save() {
+      this.tricksStore.createTrick({form: this.form});
       // todo close dialog & reset component state
       this.tricksStore.$reset()
       Object.assign(this.$data, initState())
+      this.videosStore.hide()
     },
   }
 }

@@ -10,13 +10,14 @@ export const useSubmissionsStore = defineStore({
     actions: {
         async fetchSubmissionsForTrick({trickId}) {
             const config = useRuntimeConfig()
-            this.submissions = await $fetch(`${config.public.apiBase}/api/tricks/${trickId}/submissions`, {method: 'GET', body: null});
+            this.submissions = await $fetch(`${config.public.apiBase}/api/tricks/${trickId}/submissions`, {
+                method: 'GET',
+                body: null
+            });
         },
         createSubmission({form}) {
-
-            
             const config = useRuntimeConfig()
-            return  $fetch(config.public.apiBase + "/api/submissions", {method: 'POST', body: submission})
+            return $fetch(config.public.apiBase + "/api/submissions", {method: 'POST', body: form})
         },
     }
 })

@@ -67,7 +67,7 @@ export default {
     }
   },
   data: initState,
-  watch: {
+  watch: { 
     'active': function (newValue) {
       if (!newValue) {
         Object.assign(this.$data, initState())

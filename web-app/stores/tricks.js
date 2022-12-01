@@ -9,7 +9,7 @@ export const useTricksStore = defineStore({
     }),
     getters: {
         trickItems: state => state.tricks.map(x => ({
-            text: x.name,
+            title: x.name,
             value: x.id
         }))
     },

@@ -28,7 +28,7 @@
     </template>
 
     <div v-if="videosStore.component">
-      <component :is="videosStore.component"></component>
+      <component :is="videosStore.component" ></component>
     </div>
 
     <div class="d-flex justify-center my-2">
