@@ -1,6 +1,6 @@
 ﻿<template>
   <v-app>
-    <v-app-bar :elevation="8">
+    <v-app-bar elevation="8">
       <v-app-bar-title>Tricking Library</v-app-bar-title>
       <v-spacer></v-spacer>
       <v-switch @click="toggleTheme"/>

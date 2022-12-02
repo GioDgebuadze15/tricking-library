@@ -26,7 +26,7 @@
       </v-menu>
 
     </template>
-
+    
     <div v-if="videosStore.component">
       <component :is="videosStore.component" ></component>
     </div>
@@ -44,10 +44,12 @@ import TrickSteps from "./trick-steps";
 import {useVideosStore} from "../../stores/video-upload";
 import SubmissionSteps from "./submission-steps";
 import {useTricksStore} from "../../stores/tricks";
+import DifficultyForm from "./difficulty-form";
+import CategoryForm from "./category-form";
 
 export default {
   name: "content-creation-dialog",
-  components: {TrickSteps, SubmissionSteps},
+  components: {CategoryForm, DifficultyForm, TrickSteps, SubmissionSteps},
   setup() {
     const videosStore = useVideosStore()
     const tricksStore = useTricksStore()
@@ -57,8 +59,10 @@ export default {
   computed: {
     menuItems() {
       return [
-        {component: TrickSteps, title: "Create Trick"},
+        {component: TrickSteps, title: "Trick"},
         {component: SubmissionSteps, title: "Submission"},
+        {component: CategoryForm, title: "Category"},
+        {component: DifficultyForm, title: "Difficulty"},
       ]
     }
   }
